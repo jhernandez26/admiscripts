@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+if [ ! -d /admscripts/bkps ]
+   then
+   mkdir -pv /admscripts/bkps
+fi
+cp -pv $1 /admscripts/bkps/$(basename $1)_$(date "+%d%m%y%H%M%S")
