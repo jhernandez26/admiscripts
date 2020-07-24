@@ -6,6 +6,6 @@ then
 	xauth add $(xauth -f ~opersie/.Xauthority list|tail -1)
 else
 	echo "exporting Xauthority from: $1"
-        xauth add $(xauth -f "/home/$1/.Xauthority" list)
+        xauth add $(xauth -f "/home/$1/.Xauthority" list| tail -1)
 
 fi
