@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+if [ $(ls -rtl /admscripts/bkps/ | grep -E ".*_$1_.*" | tail -1 | awk '{print $9}'  | awk -F'_' '{file=NF-1;print $file}' ) == $1 ] && [ $(ls -rtl /admscripts/bkps/ | grep -E ".*_$1_.*" | tail -1 | awk '{print $9}'| grep -c "*.tar.gz") == '0'  ] ; then
+   fileb=$(ls -rtl /admscripts/bkps/ | grep -E ".*_$1_.*" | tail -1 | awk '{print $9}')
+   file=$(ls -rtl /admscripts/bkps/ | grep -E ".*_$1_.*" | tail -1 | awk '{print $9}'  | awk -F'_' '{file=NF-1;print $file}')
+   date=$(ls -rtl /admscripts/bkps/ | grep -E ".*_$1_.*" | tail -1 | awk '{print $9}'  | awk -F'_' '{print $NF}')
+   path=$(echo $fileb | sed -r "s/$date//g")
+   path=$(echo $path | sed -r "s/$file\_//g")
+   path=$(echo $path | sed -r "s|\_|/|g")
+   cp -pfv /admscripts/bkps/$fileb $path$file
+else
+  echo "No se localizo ningun backup para el archivo $1."
+fi
