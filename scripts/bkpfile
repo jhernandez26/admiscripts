@@ -1,6 +1,24 @@
 #!/usr/bin/env bash
-if [ ! -d /admscripts/bkps ]
-   then
-   mkdir -pv /admscripts/bkps
+if [ $1 == $(basename $1)  ];then
+   ruta=$(pwd)
+   ruta="${ruta}/"
+else
+   ruta=$(echo $1 |sed "s|/$(basename $1)|/|g")  
 fi
-cp -pRv $1 /admscripts/bkps/$(basename $1)_$(date "+%d%m%y%H%M%S")
+if [ $(echo $ruta | grep -c "//") == '1'  ]; then
+   ruta=$( echo $ruta | sed -r 's|//|/|g')
+fi
+ruta_nombre=$(echo $ruta | sed "s|/|_|g")
+fecha=$(date "+%d%m%y%H%M%S")
+file=$(basename $1)
+echo $file
+nombre="${ruta_nombre}$(basename $1)_${fecha}"
+#echo $nombre
+if [ -f $1 ]
+   then
+   cp -pRv $1 /admscripts/bkps/$nombre  
+else
+   cd $ruta
+   tar czf $nombre.tar.gz $1  
+   mv -v $nombre.tar.gz /admscripts/bkps/
+fi
