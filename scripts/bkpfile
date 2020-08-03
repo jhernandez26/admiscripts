@@ -8,17 +8,17 @@ fi
 if [ $(echo $ruta | grep -c "//") == '1'  ]; then
    ruta=$( echo $ruta | sed -r 's|//|/|g')
 fi
-ruta_nombre=$(echo $ruta | sed "s|/|_|g")
+ruta_nombre=$(echo $ruta | sed "s|/|:|g")
 fecha=$(date "+%d%m%y%H%M%S")
 file=$(basename $1)
 echo $file
-nombre="${ruta_nombre}$(basename $1)_${fecha}"
+nombre="${ruta_nombre}$(basename $1):${fecha}"
 #echo $nombre
 if [ -f $1 ]
    then
    cp -pRv $1 /admscripts/bkps/$nombre  
 else
    cd $ruta
-   tar czf $nombre.tar.gz $1  
+   tar czfP $nombre.tar.gz $1  
    mv -v $nombre.tar.gz /admscripts/bkps/
 fi
