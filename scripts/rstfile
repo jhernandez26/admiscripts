@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
-if [ $(ls -rtl /admscripts/bkps/ | grep -E ".*\:$1\:.*" | tail -1 | awk '{print $9}'  | awk -F':' '{file=NF-1;print $file}' ) == $1 ] && [ $(ls -rtl /admscripts/bkps/ | grep -E ".*\:$1\:.*" | tail -1 | awk '{print $9}'| grep -c "*.tar.gz") == '0'  ] ; then
-   fileb=$(ls -rtl /admscripts/bkps/ | grep -E ".*\:$1\:.*" | tail -1 | awk '{print $9}')
+file='notfounderror'
+if [ $(ls -rtl /admscripts/bkps/ | grep -E ".*\:$1\:.*" | tail -1 | awk '{print $9}'|wc -l ) != '0'  ];then
    file=$(ls -rtl /admscripts/bkps/ | grep -E ".*\:$1\:.*" | tail -1 | awk '{print $9}'  | awk -F':' '{file=NF-1;print $file}')
+fi	
+if [ $file == $1 ] && [ $(echo $file | grep -c "*.tar.gz") == '0'  ] ; then
+   fileb=$(ls -rtl /admscripts/bkps/ | grep -E ".*\:$1\:.*" | tail -1 | awk '{print $9}')
    date=$(ls -rtl /admscripts/bkps/ | grep -E ".*\:$1\:.*" | tail -1 | awk '{print $9}'  | awk -F':' '{print $NF}')
    path=$(echo $fileb | sed -r "s/$date//g")
    path=$(echo $path | sed -r "s/$file\\://g")
