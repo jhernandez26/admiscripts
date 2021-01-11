@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+cd /admscripts/cis/Assessor-CLI/reports
+ping -c 5 8.8.8.8 > ping_$(hostname)_$(date +%Y%m%d).txt
+netstat -noa > services_$(hostname)_$(date +%Y%m%d).txt && systemctl --type=service >> services_$(hostname)_$(date +%Y%m%d).txt
+cat  /etc/redhat-release > redhat-release_$(hostname)
+iptables -nvL INPUT | awk '{print $8"," $11}' > iptables_$(hostname).csv
+cat /etc/passwd  | awk -F :  '{print $1}' > usuarios_$(hostname).csv
+cat /etc/group  | awk -F :  '{print $1}' > group_$(hostname).csv
