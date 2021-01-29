@@ -3,7 +3,8 @@ if [ $1 == $(basename $1)  ];then
    ruta=$(pwd)
    ruta="${ruta}/"
 else
-   ruta=$(echo $1 |sed "s|/$(basename $1)|/|g")  
+   base=$(basename $1 | sed 's/\./\\./g')
+   ruta=$(echo $1 |sed "s|/base|/|g")  
 fi
 if [ $(echo $ruta | grep -c "//") == '1'  ]; then
    ruta=$( echo $ruta | sed -r 's|//|/|g')
@@ -12,7 +13,8 @@ ruta_nombre=$(echo $ruta | sed "s|/|:|g")
 fecha=$(date "+%d%m%y%H%M%S")
 file=$(basename $1)
 echo $file
-nombre="${ruta_nombre}$(basename $1):${fecha}"
+#nombre="${ruta_nombre}$(basename $1):${fecha}"
+nombre="${ruta_nombre}:${fecha}"
 #echo $nombre
 if [ -f $1 ]
    then
