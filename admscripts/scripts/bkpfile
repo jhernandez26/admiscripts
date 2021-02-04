@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
+
 if [ $1 == $(basename $1)  ];then
    ruta=$(pwd)
    ruta="${ruta}/"
 else
    base=$(basename $1 | sed 's/\./\\./g')
-   ruta=$(echo $1 |sed "s|/base|/|g")  
+   ruta=$(echo $1 |sed "s|/$base|/|g")  
 fi
 if [ $(echo $ruta | grep -c "//") == '1'  ]; then
    ruta=$( echo $ruta | sed -r 's|//|/|g')
@@ -13,14 +14,13 @@ ruta_nombre=$(echo $ruta | sed "s|/|:|g")
 fecha=$(date "+%d%m%y%H%M%S")
 file=$(basename $1)
 echo $file
-#nombre="${ruta_nombre}$(basename $1):${fecha}"
-nombre="${ruta_nombre}:${fecha}"
-#echo $nombre
+nombre="${ruta_nombre}${file}:${fecha}"
 if [ -f $1 ]
    then
-   cp -pRv $1 /admscripts/bkps/$nombre  
+   cp -pv $1 /admscripts/bkps/$nombre  
 else
    cd $ruta
    tar czfP $nombre.tar.gz $1  
    mv -v $nombre.tar.gz /admscripts/bkps/
 fi
+
