@@ -2,9 +2,18 @@
 check=$(basename $1)
 if [ $(echo $1 | awk -F/ '{print NF}' ) == '1' ];then
    file=$(pwd)
-   msg="$file/$1"
+   if [[ $file != '/' ]]; then
+      msg="$file/$1"
+   else
+   	  msg="$file$1"
+   fi
    file=$(echo $file | sed 's|\/|:|g')
-   file=$(echo "$file:$1")
+   if [[ $(pwd) != '/' ]];then
+   	 file=$(echo "$file:$1")
+   else
+   	 file=$(echo "$file$1")
+   fi 
+   
 else
    msg=$1
    file=($(echo $1 | sed 's|\/|:|g'))
